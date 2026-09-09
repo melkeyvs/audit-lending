@@ -14,6 +14,7 @@
   --ink:#12161c; --muted:#59616e; --line:#d7dce3;
   --accent:#7d6218; --accent-soft:#f2ecd9;
   --bad:#a12b2b; --bad-soft:#f6e7e5; --good:#1f6b4d; --good-soft:#dfeee7;
+  --on-accent:#fff;
   --shadow:0 1px 2px rgba(18,22,28,.05),0 8px 24px -12px rgba(18,22,28,.14);
   --display:"Bitter",Georgia,serif;
   --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
@@ -21,13 +22,19 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#101317;--surface:#171b21;--surface-2:#1c2128;--ink:#e8eaee;--muted:#98a1ad;--line:#272d36;
-  --accent:#d9b45c;--accent-soft:#241f14;--bad:#e08a86;--bad-soft:#2a1c1b;--good:#6cbd97;--good-soft:#16241e;
+  --accent:#d9b45c;--accent-soft:#241f14;--on-accent:#17130a;--bad:#e08a86;--bad-soft:#2a1c1b;--good:#6cbd97;--good-soft:#16241e;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);}}
 :root[data-theme="dark"]{
   --bg:#101317;--surface:#171b21;--surface-2:#1c2128;--ink:#e8eaee;--muted:#98a1ad;--line:#272d36;
-  --accent:#d9b45c;--accent-soft:#241f14;--bad:#e08a86;--bad-soft:#2a1c1b;--good:#6cbd97;--good-soft:#16241e;}
+  --accent:#d9b45c;--accent-soft:#241f14;--on-accent:#17130a;--bad:#e08a86;--bad-soft:#2a1c1b;--good:#6cbd97;--good-soft:#16241e;}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16.5px/1.62 var(--body);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16.5px/1.62 var(--body);-webkit-font-smoothing:antialiased;
+ overflow-wrap:break-word}
+.nb{white-space:nowrap}
+@media (max-width:560px){
+  p,li{hyphens:auto;-webkit-hyphens:auto}
+  h1,h2,h3,.eyebrow,.t,code,.nb{hyphens:none;-webkit-hyphens:none}
+}
 .wrap{max-width:720px;margin:0 auto;padding:0 22px}
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.15;letter-spacing:-.015em;margin:0;text-wrap:balance}
 h1{font-size:clamp(27px,4.6vw,38px)}
@@ -50,8 +57,24 @@ section{padding:44px 0;border-top:1px solid var(--line)}
 .fault p{font-size:15px;color:var(--muted)}
 .fault .when{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .fault figure{margin:14px 0 0}
+.zoom{display:block;position:relative;cursor:zoom-in;border-radius:8px;overflow:hidden}
+.zoom::after{content:"⤢";position:absolute;right:7px;bottom:7px;width:26px;height:26px;
+ font-size:14px;line-height:26px;text-align:center;color:#fff;background:rgba(10,12,15,.66);
+ border-radius:7px;pointer-events:none}
+#lb{position:fixed;inset:0;z-index:99;background:#0a0c0f;display:none;overflow:auto;
+ -webkit-overflow-scrolling:touch;padding:0}
+#lb.on{display:block}
+#lb .lbin{min-height:100%;display:flex;padding:58px 0}
+#lb img{display:block;flex:none;margin:auto;max-width:none;width:auto;min-width:100%;height:auto}
+#lb .x{position:fixed;top:12px;right:12px;z-index:100;width:42px;height:42px;border-radius:99px;
+ border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#fff;font-size:23px;
+ line-height:40px;cursor:pointer;padding:0}
+#lb .hint{position:fixed;left:0;right:0;bottom:14px;z-index:100;color:rgba(255,255,255,.72);
+ font-family:var(--mono);font-size:11px;letter-spacing:.05em;pointer-events:none}
+body.lock{overflow:hidden}
 .fault img{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
 .fault figcaption{font-size:12.5px;color:var(--muted);margin-top:7px}
+.zh{opacity:.72}
 .fault.ok{border-left-color:var(--good)}
 .fault.ok .num{color:var(--good)}
 
@@ -77,6 +100,22 @@ tbody tr:last-child td{border-bottom:0}
 td.d{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 tr.self td{background:var(--surface-2);font-weight:600}
 tr.self td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+@media (max-width:620px){
+  .tablewrap{overflow-x:visible}
+  table{min-width:0;width:100%}
+  thead{display:none}
+  table,tbody,tr,td{display:block}
+  tr{border-bottom:1px solid var(--line);padding:14px 16px}
+  tbody tr:last-child{border-bottom:0}
+  td{border:0;padding:0;background:none}
+  td:first-child{font-weight:600;font-size:15.5px;margin-bottom:7px}
+  td.d{display:inline-block;margin:0 16px 0 0;font-size:14px;color:var(--ink)}
+  td.d::before{content:attr(data-label);display:block;font-family:var(--mono);font-size:9.5px;
+   letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  td:last-child{margin-top:10px}
+  tr.self{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+  tr.self td,tr.self td:first-child{background:none;box-shadow:none}
+}
 .chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--good-soft);color:var(--good)}
 .chip.no{background:var(--bad-soft);color:var(--bad)}
 .takeaway{margin-top:16px;padding:14px 18px;background:var(--accent-soft);border-radius:10px;font-size:15px}
@@ -103,6 +142,25 @@ input[type=range]{width:100%;margin:0;accent-color:var(--accent);height:22px}
 .fix li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:2px;background:var(--accent)}
 .fix strong{color:var(--ink);font-weight:600}
 
+.cta{margin-top:26px;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);
+ border-radius:13px;padding:24px 24px 22px;box-shadow:var(--shadow)}
+.cta h3{font-family:var(--display);font-size:clamp(19px,3vw,23px);font-weight:700;margin:8px 0 0;letter-spacing:-.01em}
+.ctalead{margin-top:10px;font-size:15.5px;color:var(--muted)}
+.offer{margin-top:18px;background:var(--accent-soft);border-radius:11px;padding:19px 20px}
+.offer .tag{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--accent)}
+.offer h4{font-family:var(--display);font-size:clamp(17px,2.6vw,20px);font-weight:700;margin:7px 0 10px;letter-spacing:-.01em}
+.offer p{font-size:15px}
+.offer p+p{margin-top:10px}
+.ctasub{margin-top:16px;font-size:14.5px;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:11px;margin-top:20px}
+.btn{display:inline-block;padding:12px 22px;border-radius:9px;font-size:15px;font-weight:600;
+ text-decoration:none;background:var(--accent);color:var(--on-accent);border:1px solid var(--accent);
+ transition:opacity .15s}
+.btn:hover{opacity:.88}
+.btn.ghost{background:transparent;color:var(--accent)}
+.ctanote{margin-top:16px;font-size:13.5px;color:var(--muted)}
+@media (max-width:560px){.btns{flex-direction:column}.btn{text-align:center}}
+
 footer{padding:34px 0 46px;border-top:1px solid var(--line);font-size:14.5px;color:var(--muted)}
 footer a{color:var(--accent)}
 footer .who{color:var(--ink);font-weight:600}
@@ -125,7 +183,7 @@ footer .who{color:var(--ink);font-weight:600}
   <div class="fault ok">
     <span class="num">ТЕЛЕФОН</span>
     <h3>Ответили почти сразу, объяснили подробно</h3>
-    <p>Мы позвонили на +7 (343) 416-90-09 и задали простой вопрос: что входит в профессиональную гигиену. Трубку взяли быстро, состав процедуры рассказали без запинки, вопрос в тупик не поставил.</p>
+    <p>Мы позвонили на <span class="nb">+7 (343) 416-90-09</span> и задали простой вопрос: что входит в профессиональную гигиену. Трубку взяли быстро, состав процедуры рассказали без запинки, вопрос в тупик не поставил.</p>
     <p style="margin-top:10px">Это не везде так. В одной из клиник района на тот же вопрос администратор растерялась и внятного ответа не дала.</p>
     <p class="when">Проверено 4 сентября 2026</p>
   </div>
@@ -142,16 +200,16 @@ footer .who{color:var(--ink);font-weight:600}
 
 <section><div class="wrap">
   <h2>Замер: пятница, 4 сентября 2026, вечер</h2>
-  <p class="sub">Клиника заявляет режим Пн–Вс, 09:00–21:00 и «консультация без выходных». Всё описанное ниже происходило в Ваши рабочие часы.</p>
+  <p class="sub">Клиника заявляет режим <span class="nb">Пн–Вс,</span> <span class="nb">09:00–21:00</span> и «консультация без выходных». Всё описанное ниже происходило в Ваши рабочие часы.</p>
 
   <div class="timeline">
     <div class="tl gd">
       <div class="t">пятница, 4 сентября · днём</div>
-      <div class="b"><b>Звонок на +7 (343) 416-90-09.</b> Ответили быстро, состав чистки рассказали подробно. Всё хорошо.</div>
+      <div class="b"><b>Звонок на <span class="nb">+7 (343) 416-90-09</span>.</b> Ответили быстро, состав чистки рассказали подробно. Всё хорошо.</div>
     </div>
     <div class="tl">
       <div class="t">пятница, 4 сентября · 17:58</div>
-      <div class="b"><b>Сообщение в WhatsApp</b> на +7 (999) 565-62-22 — номер из карточки Яндекса и с Вашего сайта.</div>
+      <div class="b"><b>Сообщение в WhatsApp</b> на <span class="nb">+7 (999) 565-62-22</span> — номер из карточки Яндекса и с Вашего сайта.</div>
     </div>
     <div class="tl">
       <div class="t">пятница, 4 сентября · 18:03</div>
@@ -159,7 +217,7 @@ footer .who{color:var(--ink);font-weight:600}
     </div>
     <div class="tl">
       <div class="t">суббота и воскресенье, 5–6 сентября</div>
-      <div class="b">По Вашему расписанию клиника открыта оба дня с 09:00 до 21:00. Ни звонка, ни ответа.</div>
+      <div class="b">По Вашему расписанию клиника открыта оба дня с <span class="nb">09:00 до 21:00</span>. Ни звонка, ни ответа.</div>
     </div>
     <div class="tl hit">
       <div class="t">вторник, 8 сентября · на момент составления разбора</div>
@@ -177,29 +235,29 @@ footer .who{color:var(--ink);font-weight:600}
     <p style="margin-top:14px;font-size:14px;color:var(--ink)"><b>Экран второй.</b> Форма, которая по этой кнопке открывается:</p>
     <blockquote>«Введите ваши контактные данные и ожидайте звонка администратора клиники»<span class="src">perspdent.ru, форма «Заявка на консультацию»</span></blockquote>
     <figure>
-      <img src="1-zayavka.png" alt="" onerror="this.parentNode.remove()">
-      <figcaption>Заполненная форма перед отправкой.</figcaption>
+      <a class="zoom" href="1-zayavka.png"><img src="1-zayavka.png" alt="" onerror="this.parentNode.parentNode.remove()"></a>
+      <figcaption>Заполненная форма перед отправкой. <span class="zh">— нажмите, чтобы увеличить</span></figcaption>
     </figure>
 
     <p style="margin-top:16px;font-size:14px;color:var(--ink)"><b>Экран третий.</b> Страница, на которую пациент попадает сразу после отправки:</p>
     <blockquote>«Благодарим за ваше обращение. Ожидайте звонка администратора. Вас проконсультируют по свободному времени записи и стоимости лечения»<span class="src">perspdent.ru/spasibo/</span></blockquote>
     <figure>
-      <img src="2-spasibo.png" alt="" onerror="this.parentNode.remove()">
-      <figcaption>Страница подтверждения после отправки заявки.</figcaption>
+      <a class="zoom" href="2-spasibo.png"><img src="2-spasibo.png" alt="" onerror="this.parentNode.parentNode.remove()"></a>
+      <figcaption>Страница подтверждения после отправки заявки. <span class="zh">— нажмите, чтобы увеличить</span></figcaption>
     </figure>
 
     <p style="margin-top:16px">Заявка отправлена в 18:03 в пятницу. Звонка не было ни в пятницу, ни в выходные, ни в понедельник, ни во вторник.</p>
-    <p style="margin-top:10px">С самими обещаниями всё в порядке — так и надо. Проблема в том, что каждое из них поднимает ожидание: человек прочитал «ожидайте звонка» три раза и сел ждать. Чем выше ожидание, тем сильнее ощущение, что его проигнорировали, — и тем охотнее он идёт к соседям.</p>
+    <p style="margin-top:10px">Сами по себе эти обещания правильные: пациенту говорят, чего ждать, и это снимает у него тревогу. Но ровно поэтому они и работают против Вас, когда звонка нет. Человек прочитал «ожидайте звонка» трижды и спокойно закрыл сайт — он уже не ищет другую клинику, он ждёт Вас. А через сутки понимает, что зря, и уходит к соседям с чувством, что его обманули.</p>
     <p class="when">Проверено 4 и 8 сентября 2026</p>
   </div>
 
   <div class="fault">
     <span class="num">02</span>
     <h3>Сообщение в WhatsApp осталось без ответа четверо суток</h3>
-    <p>WhatsApp указан и в карточке Яндекс.Карт, и на сайте — это единственный мессенджер, который Вы предлагаете пациенту. Сообщение, отправленное в 17:58 в пятницу, ответа не получило.</p>
+    <p>WhatsApp указан и в карточке на Яндекс Картах, и на сайте — это единственный мессенджер, который Вы предлагаете пациенту. Сообщение, отправленное в 17:58 в пятницу, ответа не получило.</p>
     <figure>
-      <img src="3-whatsapp.png" alt="" onerror="this.parentNode.remove()">
-      <figcaption>Переписка в WhatsApp, пятница 17:58.</figcaption>
+      <a class="zoom" href="3-whatsapp.png"><img src="3-whatsapp.png" alt="" onerror="this.parentNode.parentNode.remove()"></a>
+      <figcaption>Переписка в WhatsApp, пятница 17:58. <span class="zh">— нажмите, чтобы увеличить</span></figcaption>
     </figure>
     <p class="when">Проверено 8 сентября 2026</p>
   </div>
@@ -207,7 +265,7 @@ footer .who{color:var(--ink);font-weight:600}
   <div class="fault">
     <span class="num">03</span>
     <h3>Из двух мессенджеров в карточке работает один</h3>
-    <p>В карточке Яндекс.Карт у Вас указаны WhatsApp и Viber. Но Viber в России фактически перестал существовать: с конца 2024 года он не открывается, а компания закрыла московский офис и свернула работу в стране. Кнопка в карточке есть, за ней ничего нет.</p>
+    <p>В Вашей карточке на Яндекс Картах указаны WhatsApp и Viber. Но Viber в России фактически перестал существовать: с конца 2024 года он не открывается, а компания закрыла московский офис и свернула работу в стране. Кнопка в карточке есть, за ней ничего нет.</p>
     <p style="margin-top:10px">Значит, написать Вам пациент может ровно одним способом — в WhatsApp. Ни Telegram, ни ВКонтакте, ни Max в карточке нет, хотя именно они у большинства уже стоят на телефоне. У соседей есть: у Стоматологии Захаровой, Доктора А и Дента ОС — по четыре канала на каждого.</p>
     <p style="margin-top:10px">Здесь теряется не ответ на обращение, а само обращение: человек не пишет в мессенджер, которого у него нет, и не переключается ради этого на другой. Он открывает соседнюю карточку.</p>
     <p class="when">Проверено 8 сентября 2026</p>
@@ -236,11 +294,11 @@ footer .who{color:var(--ink);font-weight:600}
   <div class="tablewrap"><table>
     <thead><tr><th>Клиника</th><th>Расстояние</th><th>Рейтинг</th><th>Отзывов</th><th>Каналы для сообщения</th></tr></thead>
     <tbody>
-      <tr class="self"><td>Перспектива</td><td class="d">—</td><td class="d">4,8</td><td class="d">114</td><td><span class="chip no">только WhatsApp</span></td></tr>
-      <tr><td>Стоматология Захаровой</td><td class="d">221 м</td><td class="d">5,0</td><td class="d">204</td><td><span class="chip">WhatsApp, Telegram, ВК, ОК</span></td></tr>
-      <tr><td>Доктор А</td><td class="d">714 м</td><td class="d">5,0</td><td class="d">118</td><td><span class="chip">WhatsApp, Telegram, ВК, ОК</span></td></tr>
-      <tr><td>Дента ОС</td><td class="d">844 м</td><td class="d">5,0</td><td class="d">394</td><td><span class="chip">WhatsApp, Telegram, ВК, Max</span></td></tr>
-      <tr><td>Гарант</td><td class="d">940 м</td><td class="d">5,0</td><td class="d">332</td><td><span class="chip no">только ВКонтакте</span></td></tr>
+      <tr class="self"><td>Перспектива</td><td class="d" data-label="Расстояние">—</td><td class="d" data-label="Рейтинг">4,8</td><td class="d" data-label="Отзывов">114</td><td><span class="chip no">только WhatsApp</span></td></tr>
+      <tr><td>Стоматология Захаровой</td><td class="d" data-label="Расстояние">221 м</td><td class="d" data-label="Рейтинг">5,0</td><td class="d" data-label="Отзывов">204</td><td><span class="chip">WhatsApp, Telegram, ВК, ОК</span></td></tr>
+      <tr><td>Доктор А</td><td class="d" data-label="Расстояние">714 м</td><td class="d" data-label="Рейтинг">5,0</td><td class="d" data-label="Отзывов">118</td><td><span class="chip">WhatsApp, Telegram, ВК, ОК</span></td></tr>
+      <tr><td>Дента ОС</td><td class="d" data-label="Расстояние">844 м</td><td class="d" data-label="Рейтинг">5,0</td><td class="d" data-label="Отзывов">394</td><td><span class="chip">WhatsApp, Telegram, ВК, Max</span></td></tr>
+      <tr><td>Гарант</td><td class="d" data-label="Расстояние">940 м</td><td class="d" data-label="Рейтинг">5,0</td><td class="d" data-label="Отзывов">332</td><td><span class="chip no">только ВКонтакте</span></td></tr>
     </tbody>
   </table></div>
   <div class="takeaway">
@@ -289,16 +347,54 @@ footer .who{color:var(--ink);font-weight:600}
     <li><strong>Начать отвечать на отзывы 2026 года.</strong> Их двадцать два, ответ есть под одним. При растущем потоке это самый дешёвый способ превратить репутацию в записи.</li>
   </ul>
   <p class="sub" style="margin-top:20px">Всё это можно сделать своими силами — понадобится вечер и человек, готовый разбираться с админкой сайта и настройками карточки.</p>
-  <p class="sub" style="margin-top:12px">Если разбираться не хочется — это могу сделать я. Найти, куда уходят заявки, подключить недостающие каналы, привести карточку в порядок. Отдельный разговор — сделать так, чтобы заявка и сообщение получали ответ в течение минуты, круглосуточно и в выходные, и чтобы ни одно обращение не могло потеряться молча. Напишите, обсудим, что из этого Вам нужно.</p>
+
+  <div class="cta">
+    <span class="eyebrow">Или можете обратиться ко мне</span>
+    <h3>Меня зовут Дмитрий</h3>
+    <p class="ctalead">Автоматизирую обработку заявок в малом бизнесе: настраиваю так, чтобы ни одно обращение не оставалось без ответа — ни вечером, ни в выходной, ни пока администратор занят.</p>
+
+    <div class="offer">
+      <span class="tag">Основное, что я делаю</span>
+      <h4>Ассистент в мессенджерах</h4>
+      <p>Бот, который отвечает на сообщения в WhatsApp, Telegram, Max и ВКонтакте круглосуточно: называет цены, рассказывает об услугах и врачах, помогает записаться. Сложный вопрос передаёт администратору с пометкой «ждёт ответа».</p>
+      <p>Собирается под конкретную клинику — на Вашем прайсе, Ваших услугах и Ваших врачах, а не на общем шаблоне. Не выдумывает и не даёт медицинских советов: чего нет в базе знаний, на то отвечает «уточню у администратора».</p>
+      <p>Для Перспективы это значит две вещи: ни одного обращения, оставшегося без ответа, — и разгруженный администратор, которому больше не нужно двадцать раз в день отвечать на один и тот же вопрос про цены.</p>
+    </div>
+
+    <p class="ctasub">Заодно, если понадобится: найду, куда уходят заявки с сайта, и починю доставку заявок; подключу Telegram, ВКонтакте и Max в карточке и на сайте; приведу карточку в Яндекс Картах в порядок; обновлю на сайте то, что устарело, — просроченные акции, цены, старые даты.</p>
+
+    <div class="btns">
+      <a class="btn" href="https://t.me/demeezy">Написать в Telegram</a>
+      <a class="btn ghost" href="https://vk.ru/demeezy">Написать в ВКонтакте</a>
+    </div>
+    <p class="ctanote">Разбор бесплатный и ни к чему не обязывает. Решите делать сами — тоже хорошо: спрашивайте, подскажу без всяких условий.</p>
+  </div>
 </div></section>
 
 <footer><div class="wrap">
   <p><span class="who">Дмитрий</span> · разбор сделан вручную, бесплатно и без обязательств</p>
   <p style="margin-top:8px"><a href="https://t.me/demeezy">Telegram</a> · <a href="https://vk.ru/demeezy">ВКонтакте</a> · <a href="https://elkaudit.ru">elkaudit.ru</a></p>
-  <p style="margin-top:14px;font-size:13px">Все факты в разборе взяты из открытых источников: карточки организации в Яндекс.Картах, публичного сайта клиники, одного звонка на указанный номер и двух обращений, отправленных как обычный пациент. Материалы носят информационный характер.</p>
+  <p style="margin-top:14px;font-size:13px">Все факты в разборе взяты из открытых источников: карточки организации в Яндекс Картах, публичного сайта клиники, одного звонка на указанный номер и двух обращений, отправленных как обычный пациент. Материалы носят информационный характер.</p>
 </div></footer>
 
+<div id="lb" role="dialog" aria-modal="true">
+  <button class="x" type="button" aria-label="Закрыть">&times;</button>
+  <div class="lbin"><img alt=""></div>
+  <p class="hint">нажмите в любом месте, чтобы закрыть</p>
+</div>
+
 <script>
+(function(){
+ var lb=document.getElementById('lb'),im=lb.querySelector('img');
+ function open(src){im.src=src;lb.classList.add('on');document.body.classList.add('lock');lb.scrollTop=0;lb.scrollLeft=Math.max(0,(im.scrollWidth-lb.clientWidth)/2);}
+ function close(){lb.classList.remove('on');document.body.classList.remove('lock');im.src='';}
+ document.querySelectorAll('a.zoom').forEach(function(a){
+   a.addEventListener('click',function(e){e.preventDefault();open(a.getAttribute('href'));});
+ });
+ lb.addEventListener('click',close);
+ im.addEventListener('load',function(){lb.scrollLeft=Math.max(0,(im.scrollWidth-lb.clientWidth)/2);});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb.classList.contains('on'))close();});
+})();
 (function(){
  var a=document.getElementById('a'),b=document.getElementById('b'),c=document.getElementById('c'),
      ao=document.getElementById('ao'),bo=document.getElementById('bo'),co=document.getElementById('co'),
