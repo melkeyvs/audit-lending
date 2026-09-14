@@ -75,6 +75,11 @@ body.lock{overflow:hidden}
 .fault img{display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
 .fault figcaption{font-size:12.5px;color:var(--muted);margin-top:7px}
 .zh{opacity:.72}
+figure.failed a{display:none}
+figure.failed::before{content:"Скриншот не загрузился — откройте страницу из папки, где лежат картинки";
+ display:block;padding:22px 16px;border:1px dashed var(--line);border-radius:8px;
+ font-size:13px;color:var(--muted);text-align:center;background:var(--surface-2)}
+
 .fault.ok{border-left-color:var(--good)}
 .fault.ok .num{color:var(--good)}
 
@@ -158,12 +163,79 @@ input[type=range]{width:100%;margin:0;accent-color:var(--accent);height:22px}
  transition:opacity .15s}
 .btn:hover{opacity:.88}
 .btn.ghost{background:transparent;color:var(--accent)}
+.telline{margin-top:14px;font-size:15px;color:var(--muted)}
+.telline a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--line)}
 .ctanote{margin-top:16px;font-size:13.5px;color:var(--muted)}
 @media (max-width:560px){.btns{flex-direction:column}.btn{text-align:center}}
 
 footer{padding:34px 0 46px;border-top:1px solid var(--line);font-size:14.5px;color:var(--muted)}
 footer a{color:var(--accent)}
 footer .who{color:var(--ink);font-weight:600}
+</style>
+
+<style>
+.printonly{display:none}
+@media print{
+  @page{size:A4;margin:13mm 13mm 13mm}
+  :root,:root[data-theme="dark"],:root:not([data-theme="light"]){
+    --bg:#fff;--surface:#fff;--surface-2:#f4f5f7;--ink:#0f1317;--muted:#4a525e;--line:#c9d0d9;
+    --accent:#6a5214;--accent-soft:#f5f0e0;--bad:#8f2424;--bad-soft:#f8ebe9;
+    --good:#1a5c42;--good-soft:#e7f1ec;--on-accent:#fff;--shadow:none;
+  }
+  html,body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-size:10pt;line-height:1.48}
+  .wrap{max-width:none;padding:0}
+  .ruler{display:none}
+  header{padding:0 0 6mm}
+  section{padding:6mm 0}
+  h1{font-size:21pt;margin-top:0}
+  h2{font-size:14.5pt}
+  h3{font-size:11.5pt}
+  h1,h2,h3,h4,.eyebrow,.tag{break-after:avoid;page-break-after:avoid}
+  p,li{orphans:3;widows:3}
+  .lede{font-size:11pt}
+  .pricecard,.calc,.cta,.offer,.takeaway,.keynote,figure,.timeline{break-inside:avoid;page-break-inside:avoid}
+  .tablewrap{break-inside:auto;page-break-inside:auto}
+  thead{display:table-header-group}
+  tr{break-inside:avoid;page-break-inside:avoid}
+  .fault{break-inside:auto;page-break-inside:auto}
+  .fault{box-shadow:none;border:1px solid var(--line);border-left:3px solid var(--bad);padding:12px 14px;margin-top:8px}
+  .fault.ok{border-left-color:var(--good)}
+  figure{margin-top:9px}
+  figure img{max-height:155mm;max-width:100%;width:auto;height:auto;margin:0 auto;display:block}
+  .zoom{cursor:auto;display:inline-block}
+  .zoom::after,.zh,#lb{display:none!important}
+  input[type=range]{display:none}
+  .field{margin-bottom:5px}
+  .field .top{margin-bottom:0}
+  .total{margin-top:9px;padding-top:10px}
+  .btns,.telline{display:none}
+  table{min-width:0;font-size:9.5pt}
+  th,td{padding:6px 9px}
+  .chip{border:1px solid currentColor}
+  a{color:var(--ink);text-decoration:none}
+  .cta,.calc,.pricecard{box-shadow:none;border:1px solid var(--line)}
+  .sub,.lede,.eyebrow,.tag,.slab{break-after:avoid;page-break-after:avoid;break-inside:avoid;page-break-inside:avoid}
+  .tablewrap,.calc,.fix,.steps,.shots,.when{break-before:avoid;page-break-before:avoid}
+  .keep{break-inside:avoid;page-break-inside:avoid}
+  blockquote{break-inside:avoid;page-break-inside:avoid;break-after:avoid;page-break-after:avoid}
+  .chapter{break-before:page;page-break-before:always}
+  .newpage{break-before:page;page-break-before:always}
+  .cta{padding:16px 18px}
+  .cta h3{font-size:14pt}
+  .ctalead{font-size:10pt;margin-top:7px}
+  .offer{padding:13px 15px;margin-top:12px}
+  .offer+.offer{margin-top:10px}
+  .offer h4{font-size:11.5pt;margin:5px 0 7px}
+  .offer p+p{margin-top:6px}
+  .offer p{font-size:9.5pt}
+  .ctatie{margin-top:12px}
+  .ctasub{margin-top:11px}
+  .ctanote{margin-top:10px}
+  footer{padding:5mm 0 0;break-inside:avoid;page-break-inside:avoid}
+  .printonly{display:block}
+  footer{padding:7mm 0 0}
+}
 </style>
 </head>
 <body>
@@ -173,8 +245,9 @@ footer .who{color:var(--ink);font-weight:600}
   <span class="eyebrow">Разбор обращений · 8 сентября 2026</span>
   <h1 style="margin-top:16px">Перспектива</h1>
   <p class="addr">ул. Черепанова, 30 · Екатеринбург · рейтинг 4,8 · 178 оценок · 114 отзывов</p>
-  <p class="lede">Клиника растёт. За 2026 год — 22 новых отзыва против 13 за весь 2025-й. По телефону отвечают быстро и по делу.</p>
+  <p class="lede">Клиника растёт. За 2026 год — 22 новых отзыва против 13 за весь <span class="nb">2025-й</span>. По телефону отвечают быстро и по делу.</p>
   <p class="lede" style="margin-top:14px">Но заявка, оставленная на Вашем же сайте в пятницу вечером, за четверо суток не получила обратного звонка. Хотя сайт обещает этот звонок трижды — на трёх экранах подряд.</p>
+  <p class="printonly" style="margin-top:16px;font-size:10pt;color:var(--muted);border-top:1px solid var(--line);padding-top:8px">Электронная версия этого разбора, со скриншотами в полном размере: <b>elkaudit.ru/perspektiva</b></p>
 </div></header>
 
 <section><div class="wrap">
@@ -191,16 +264,16 @@ footer .who{color:var(--ink);font-weight:600}
   <div class="fault ok">
     <span class="num">ПОТОК</span>
     <h3>Вас находят всё чаще</h3>
-    <p>22 отзыва за неполный 2026 год против 13 за весь 2025-й. Среди клиник района, которые мы смотрели, такой рост — редкость: у большинства поток ровный, у некоторых падает в разы.</p>
+    <p>22 отзыва за неполный 2026 год против 13 за весь <span class="nb">2025-й</span>. Среди клиник района, которые мы смотрели, такой рост — редкость: у большинства поток ровный, у некоторых падает в разы.</p>
     <p class="when">Свежайший отзыв: 21 августа 2026</p>
   </div>
 
   <p class="takeaway">Весь разбор ниже — о том, что происходит с обращением до того, как оно доходит до человека.</p>
 </div></section>
 
-<section><div class="wrap">
+<section class="chapter"><div class="wrap">
   <h2>Замер: пятница, 4 сентября 2026, вечер</h2>
-  <p class="sub">Клиника заявляет режим <span class="nb">Пн–Вс,</span> <span class="nb">09:00–21:00</span> и «консультация без выходных». Всё описанное ниже происходило в Ваши рабочие часы.</p>
+  <p class="sub">Клиника заявляет режим <span class="nb">Пн–Вс,</span> <span class="nb">09:00–21:00</span> и «консультация <span class="nb">без выходных</span>». Всё описанное ниже происходило в Ваши рабочие часы.</p>
 
   <div class="timeline">
     <div class="tl gd">
@@ -225,26 +298,28 @@ footer .who{color:var(--ink);font-weight:600}
     </div>
   </div>
 
-  <div class="fault" style="margin-top:26px">
+  <div class="fault newpage" style="margin-top:26px">
     <span class="num">01</span>
     <h3>Обратного звонка не было — хотя пациенту его пообещали трижды</h3>
     <p>Это не наша трактовка, а Ваш собственный текст. Вот что человек читает, пока оставляет заявку.</p>
 
     <p style="margin-top:14px;font-size:14px;color:var(--ink)"><b>Экран первый.</b> Зелёная кнопка «Обратный звонок» в шапке сайта, на каждой странице.</p>
 
-    <p style="margin-top:14px;font-size:14px;color:var(--ink)"><b>Экран второй.</b> Форма, которая по этой кнопке открывается:</p>
+    <div class="keep"><p style="margin-top:14px;font-size:14px;color:var(--ink)"><b>Экран второй.</b> Форма, которая по этой кнопке открывается:</p>
     <blockquote>«Введите ваши контактные данные и ожидайте звонка администратора клиники»<span class="src">perspdent.ru, форма «Заявка на консультацию»</span></blockquote>
     <figure>
-      <a class="zoom" href="1-zayavka.png"><img src="1-zayavka.png" alt="" onerror="this.parentNode.parentNode.remove()"></a>
+      <a class="zoom" href="1-zayavka.png"><img src="1-zayavka.png" alt="" onerror="this.closest('figure').classList.add('failed')"></a>
       <figcaption>Заполненная форма перед отправкой. <span class="zh">— нажмите, чтобы увеличить</span></figcaption>
-    </figure>
+    </figure></div>
+    
 
-    <p style="margin-top:16px;font-size:14px;color:var(--ink)"><b>Экран третий.</b> Страница, на которую пациент попадает сразу после отправки:</p>
+    <div class="keep"><p style="margin-top:16px;font-size:14px;color:var(--ink)"><b>Экран третий.</b> Страница, на которую пациент попадает сразу после отправки:</p>
     <blockquote>«Благодарим за ваше обращение. Ожидайте звонка администратора. Вас проконсультируют по свободному времени записи и стоимости лечения»<span class="src">perspdent.ru/spasibo/</span></blockquote>
     <figure>
-      <a class="zoom" href="2-spasibo.png"><img src="2-spasibo.png" alt="" onerror="this.parentNode.parentNode.remove()"></a>
+      <a class="zoom" href="2-spasibo.png"><img src="2-spasibo.png" alt="" onerror="this.closest('figure').classList.add('failed')"></a>
       <figcaption>Страница подтверждения после отправки заявки. <span class="zh">— нажмите, чтобы увеличить</span></figcaption>
-    </figure>
+    </figure></div>
+    
 
     <p style="margin-top:16px">Заявка отправлена в 18:03 в пятницу. Звонка не было ни в пятницу, ни в выходные, ни в понедельник, ни во вторник.</p>
     <p style="margin-top:10px">Сами по себе эти обещания правильные: пациенту говорят, чего ждать, и это снимает у него тревогу. Но ровно поэтому они и работают против Вас, когда звонка нет. Человек прочитал «ожидайте звонка» трижды и спокойно закрыл сайт — он уже не ищет другую клинику, он ждёт Вас. А через сутки понимает, что зря, и уходит к соседям с чувством, что его обманули.</p>
@@ -256,7 +331,7 @@ footer .who{color:var(--ink);font-weight:600}
     <h3>Сообщение в WhatsApp осталось без ответа четверо суток</h3>
     <p>WhatsApp указан и в карточке на Яндекс Картах, и на сайте — это единственный мессенджер, который Вы предлагаете пациенту. Сообщение, отправленное в 17:58 в пятницу, ответа не получило.</p>
     <figure>
-      <a class="zoom" href="3-whatsapp.png"><img src="3-whatsapp.png" alt="" onerror="this.parentNode.parentNode.remove()"></a>
+      <a class="zoom" href="3-whatsapp.png"><img src="3-whatsapp.png" alt="" onerror="this.closest('figure').classList.add('failed')"></a>
       <figcaption>Переписка в WhatsApp, пятница 17:58. <span class="zh">— нажмите, чтобы увеличить</span></figcaption>
     </figure>
     <p class="when">Проверено 8 сентября 2026</p>
@@ -363,17 +438,19 @@ footer .who{color:var(--ink);font-weight:600}
 
     <p class="ctasub">Заодно, если понадобится: найду, куда уходят заявки с сайта, и починю доставку заявок; подключу Telegram, ВКонтакте и Max в карточке и на сайте; приведу карточку в Яндекс Картах в порядок; обновлю на сайте то, что устарело, — просроченные акции, цены, старые даты.</p>
 
+    <p class="printonly" style="margin-top:18px;font-size:11pt"><b>Связаться:</b> <span class="nb">+7 (921) 445-66-95</span>&nbsp;&nbsp;·&nbsp;&nbsp;Telegram t.me/demeezy&nbsp;&nbsp;·&nbsp;&nbsp;ВКонтакте vk.ru/demeezy</p>
     <div class="btns">
       <a class="btn" href="https://t.me/demeezy">Написать в Telegram</a>
       <a class="btn ghost" href="https://vk.ru/demeezy">Написать в ВКонтакте</a>
     </div>
+    <p class="telline">Или позвоните: <a class="nb" href="tel:+79214456695">+7 (921) 445-66-95</a></p>
     <p class="ctanote">Разбор бесплатный и ни к чему не обязывает. Решите делать сами — тоже хорошо: спрашивайте, подскажу без всяких условий.</p>
   </div>
 </div></section>
 
 <footer><div class="wrap">
   <p><span class="who">Дмитрий</span> · разбор сделан вручную, бесплатно и без обязательств</p>
-  <p style="margin-top:8px"><a href="https://t.me/demeezy">Telegram</a> · <a href="https://vk.ru/demeezy">ВКонтакте</a> · <a href="https://elkaudit.ru">elkaudit.ru</a></p>
+  <p style="margin-top:8px"><a class="nb" href="tel:+79214456695">+7 (921) 445-66-95</a> · <a href="https://t.me/demeezy">Telegram</a> · <a href="https://vk.ru/demeezy">ВКонтакте</a> · <a href="https://elkaudit.ru">elkaudit.ru</a></p>
   <p style="margin-top:14px;font-size:13px">Все факты в разборе взяты из открытых источников: карточки организации в Яндекс Картах, публичного сайта клиники, одного звонка на указанный номер и двух обращений, отправленных как обычный пациент. Материалы носят информационный характер.</p>
 </div></footer>
 
